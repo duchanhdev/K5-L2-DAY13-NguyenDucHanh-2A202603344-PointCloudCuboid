@@ -162,19 +162,23 @@ def render_perspective(points, boxes, size=(1100, 700), *, zoom=1.0, azim=0.0,
     for depth, p, u, vv in projected:
         z = p[2]
         if z < -2.2:
-            col = (165, 105, 245)
+            col = (185, 120, 255)
         elif z < 0.2:
-            col = (150, 162, 178)
+            col = (185, 195, 210)
         elif z < 1.4:
-            col = (208, 215, 228)
+            col = (225, 232, 245)
         elif z < 4.0:
-            col = (238, 241, 250)
+            col = (248, 251, 255)
         else:
-            col = (255, 226, 132)
+            col = (255, 235, 160)
         draw.point((u, vv), fill=col)
-        if depth < 40:
+        if depth < 45:
             draw.point((u + 1, vv), fill=col)
             draw.point((u, vv + 1), fill=col)
+        if depth < 22:
+            draw.point((u - 1, vv), fill=col)
+            draw.point((u, vv - 1), fill=col)
+            draw.point((u + 2, vv + 1), fill=col)
 
     # cuboids
     for box in boxes:
@@ -229,19 +233,20 @@ def render_top(points, boxes, size=(1100, 700), *, span=45.0, title="", subtitle
         if r > span:
             continue
         if z < -2.2:
-            col = (150, 90, 235)
+            col = (185, 120, 255)
         elif z < 0.2:
-            col = (140, 150, 165)
+            col = (175, 185, 200)
         elif z < 1.4:
-            col = (200, 208, 222)
+            col = (222, 230, 244)
         elif z < 4.0:
-            col = (232, 236, 248)
+            col = (246, 249, 255)
         else:
-            col = (255, 225, 130)
+            col = (255, 235, 160)
         u, v = to_px(x, y)
         draw.point((u, v), fill=col)
-        if r < 30:
+        if r < 32:
             draw.point((u + 1, v), fill=col)
+            draw.point((u, v + 1), fill=col)
 
     for box in boxes:
         color = hexrgb(vf.LABEL_COLORS.get(box["label"], "#ffffff"))
